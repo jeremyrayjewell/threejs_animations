@@ -59,4 +59,17 @@ headBottom.scale.set(0.85, 1, 0.85); // Make skinnier by scaling X and Z only, k
 headBottom.castShadow = true;
 headGroup.add(headBottom);
 
+// Add the head group to the scene
+scene.add(headGroup);
+
+// Animation loop
+function animate() {
+	requestAnimationFrame(animate);
+	// Optionally, rotate the head for a little movement
+	headGroup.rotation.y += 0.01;
+	renderer.render(scene, camera);
+}
+
+animate();
+
 // ...existing code continues...
