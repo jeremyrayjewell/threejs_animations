@@ -1,4 +1,7 @@
 
+alert('main.js loaded');
+window.addEventListener('error', function(e) { console.error('Global error:', e.message, e); });
+
 
 // Create scene
 const scene = new THREE.Scene();
