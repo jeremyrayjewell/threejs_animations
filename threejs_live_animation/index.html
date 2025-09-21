@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio-Reactive Three.js Animations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <canvas id="threejs-canvas"></canvas>
+        
+        <!-- Audio Controls -->
+        <div id="controls">
+            <div class="control-group">
+                <button id="start-audio">Start Audio</button>
+                <button id="stop-audio">Stop Audio</button>
+                <button id="test-audio">Test Microphone</button>
+                <button id="calibrate-audio">Calibrate Volume</button>
+            </div>
+            
+            <div class="control-group">
+                <label for="sensitivity">Sensitivity:</label>
+                <input type="range" id="sensitivity" min="0.1" max="5" step="0.1" value="1">
+                <span id="sensitivity-value">1.0</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="animation-mode">Animation Mode:</label>
+                <select id="animation-mode">
+                    <option value="cubes">Dancing Cubes</option>
+                    <option value="sphere">Reactive Sphere</option>
+                    <option value="particles">Particle Storm</option>
+                    <option value="waves">Audio Waves</option>
+                    <option value="helix">DNA Helix</option>
+                    <option value="tunnel">Bass Tunnel</option>
+                    <option value="galaxy">Spiral Galaxy</option>
+                    <option value="tree">Fractal Tree</option>
+                    <option value="crystals">Crystal Formation</option>
+                    <option value="rings">Sound Rings</option>
+                    <option value="bars">Frequency Bars</option>
+                    <option value="matrix">Matrix Rain</option>
+                    <option value="plasma">Plasma Field</option>
+                    <option value="vortex">Vortex Tunnel</option>
+                    <option value="neural">Neural Network</option>
+                    <option value="kaleidoscope">Kaleidoscope</option>
+                    <option value="lightning">Lightning Field</option>
+                    <option value="ocean">Ocean Waves</option>
+                    <option value="fractal">Fractal Mandala</option>
+                    <option value="spiral">Fibonacci Spiral</option>
+                    <option value="aurora">Aurora Borealis</option>
+                    <option value="cityscape">Digital Cityscape</option>
+                    <option value="molecules">Molecular Dance</option>
+                    <option value="tornado">Tornado Vortex</option>
+                    <option value="cosmos">Cosmic Nebula</option>
+                    <option value="labyrinth">Digital Labyrinth</option>
+                    <option value="waterfall">Data Waterfall</option>
+                    <option value="fire">Plasma Fire</option>
+                    <option value="ice">Crystal Ice</option>
+                    <option value="desert">Desert Dunes</option>
+                    <option value="volcano">Lava Eruption</option>
+                    <option value="forest">Digital Forest</option>
+                    <option value="cyberpunk">Cyberpunk Grid</option>
+                    <option value="retro">Retro Wave</option>
+                    <option value="abstract">Abstract Flow</option>
+                    <option value="mechanical">Mechanical Gears</option>
+                    <option value="underwater">Underwater World</option>
+                    <option value="constellation">Star Constellation</option>
+                    <option value="blackhole">Black Hole</option>
+                    <option value="prism">Light Prism</option>
+                    <option value="quantum">Quantum Field</option>
+                    <option value="ecosystem">Digital Ecosystem</option>
+                    <option value="texturePortal">JRJ Portal</option>
+                    <option value="jrj3D">JRJ 3D Gallery</option>
+                    <option value="aggregatron">Aggregatron Core</option>
+                    <option value="aggregatronGlow">Aggregatron Glow</option>
+                </select>
+                <button id="random-cycle">Random Cycle</button>
+            </div>
+        </div>
+        
+        <!-- Security Notice -->
+        <div id="security-notice" style="display: none;">
+            <div class="notice-content">
+                <strong>HTTPS Required:</strong> This app needs microphone access, which requires HTTPS or localhost.
+                <button onclick="document.getElementById('security-notice').style.display='none'">×</button>
+            </div>
+        </div>
+        
+        <!-- Status Display -->
+        <div id="status">
+            <div id="audio-level">Audio Level: 0</div>
+            <div id="frequency-display">Frequency: 0 Hz</div>
+        </div>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Main Application Scripts -->
+    <script src="audio-analyzer.js"></script>
+    <script src="threejs-scene.js"></script>
+    <script src="animations.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+}
+
+#container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#threejs-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Controls Panel */
+#controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 20, 40, 0.9);
+    padding: 20px;
+    border: 2px solid #00ffff;
+    border-style: solid;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    font-family: 'Rajdhani', 'Orbitron', monospace;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+button {
+    background: linear-gradient(90deg, #001122, #003344);
+    color: #00ffff;
+    border: 2px solid #00aaaa;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-family: 'Rajdhani', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #003344, #005566);
+    color: #ffffff;
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+button:active {
+    background: linear-gradient(90deg, #005566, #007788);
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background: #333;
+    color: #666;
+    border-color: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#test-audio {
+    background: linear-gradient(90deg, #002200, #004400);
+    color: #00ff00;
+    border-color: #00aa00;
+}
+
+#test-audio:hover {
+    background: linear-gradient(90deg, #004400, #006600);
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+#calibrate-audio {
+    background: linear-gradient(90deg, #220000, #440000);
+    color: #ff8800;
+    border-color: #aa4400;
+}
+
+#calibrate-audio:hover {
+    background: linear-gradient(90deg, #440000, #660000);
+    border-color: #ffaa00;
+    box-shadow: 0 0 15px rgba(255, 136, 0, 0.5);
+}
+
+#hide-gui {
+    background: linear-gradient(90deg, #220022, #440044);
+    color: #cc88ff;
+    border-color: #8844aa;
+    font-size: 12px;
+    padding: 8px 16px;
+}
+
+#hide-gui:hover {
+    background: linear-gradient(90deg, #440044, #660066);
+    border-color: #cc88ff;
+    box-shadow: 0 0 15px rgba(204, 136, 255, 0.5);
+}
+
+#random-cycle {
+    background: linear-gradient(90deg, #001100, #003300);
+    color: #88ff88;
+    border-color: #44aa44;
+    margin-left: 10px;
+}
+
+#random-cycle:hover {
+    background: linear-gradient(90deg, #003300, #005500);
+    border-color: #88ff88;
+    box-shadow: 0 0 15px rgba(136, 255, 136, 0.5);
+}
+
+#random-cycle:active {
+    background: linear-gradient(90deg, #005500, #007700);
+}
+
+#random-cycle.active {
+    background: linear-gradient(90deg, #ff3300, #cc2200) !important;
+    color: #ffffff !important;
+    border-color: #ff6600 !important;
+    animation: pulse-cycle 2s infinite;
+}
+
+#random-cycle.active:hover {
+    background: linear-gradient(90deg, #cc2200, #aa1100) !important;
+    border-color: #ff8800 !important;
+}
+
+@keyframes pulse-cycle {
+    0%, 100% { 
+        box-shadow: 0 0 15px rgba(255, 51, 0, 0.5);
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(255, 51, 0, 0.8);
+    }
+}
+
+label {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 14px;
+    font-family: 'Rajdhani', monospace;
+    font-weight: 600;
+    color: #00ffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input[type="range"] {
+    width: 120px;
+    margin-right: 10px;
+    accent-color: #00ffff;
+}
+
+select {
+    background: linear-gradient(90deg, #001122, #002244);
+    color: #00ffff;
+    border: 2px solid #00aaaa;
+    padding: 8px 16px;
+    font-family: 'Rajdhani', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+select:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Status Display */
+#status {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 20, 40, 0.9);
+    padding: 15px;
+    border: 2px solid #00ffff;
+    border-style: solid;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#status div {
+    margin-bottom: 5px;
+}
+
+#status div:last-child {
+    margin-bottom: 0;
+}
+
+#audio-level {
+    color: #00ff88;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#frequency-display {
+    color: #ffaa00;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 15px;
+        border-width: 2px;
+    }
+    
+    .control-group {
+        margin-bottom: 10px;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 12px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border-width: 2px;
+    }
+    
+    #status {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        text-align: center;
+        border-width: 2px;
+    }
+    
+    label {
+        font-size: 12px;
+    }
+    
+    select {
+        font-size: 12px;
+        border-width: 2px;
+    }
+}
+
+/* Security Notice */
+#security-notice {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #cc4400, #ff6600);
+    color: #000;
+    padding: 12px;
+    text-align: center;
+    z-index: 200;
+    font-family: 'Rajdhani', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 3px solid #ff8800;
+}
+
+.notice-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.notice-content button {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    background: #000;
+    border: 2px solid #ff8800;
+    color: #ff8800;
+    font-size: 16px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+}
+
+.notice-content button:hover {
+    background: #ff8800;
+    color: #000;
+}
+
+/* Animation for UI elements */
+#controls, #status {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading indicator */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #00ffff;
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 200;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.loading::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+/* Temporary message styles */
+#temporary-message {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(0, 255, 255, 0.15);
+    color: rgba(0, 255, 255, 0.8);
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-weight: 400;
+    font-size: 11px;
+    z-index: 10000;
+    opacity: 1;
+    transition: opacity 1.5s ease-out;
+    backdrop-filter: blur(5px);
+}
