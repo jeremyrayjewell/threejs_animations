@@ -44,6 +44,12 @@ class AudioVisualizerApp {
         // GUI visibility state
         this.isGUIHidden = false;
         
+        // Darkness control properties
+        this.darknessLevel = 0; // 0 = normal, 1 = completely dark
+        this.maxDarkness = 1.0; // Maximum darkness level (completely black)
+        this.darknessStep = 0.05; // Amount to change per scroll
+        this.darknessOverlay = null;
+        
         this.init();
     }
 
@@ -201,6 +207,9 @@ class AudioVisualizerApp {
         // Add screen click/tap to show hidden GUI
         document.addEventListener('click', (e) => this.handleScreenClick(e));
         document.addEventListener('touchstart', (e) => this.handleScreenClick(e));
+        
+        // Add scroll wheel darkness control
+        this.setupScrollDarkness();
         
         // Add preset buttons
         this.addPresetButtons();
@@ -1004,6 +1013,82 @@ class AudioVisualizerApp {
         }, 1000);
     }
 
+    setupScrollDarkness() {
+        // Create darkness overlay element
+        this.darknessOverlay = document.createElement('div');
+        this.darknessOverlay.id = 'darkness-overlay';
+        this.darknessOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            transition: opacity 0.1s ease-out;
+        `;
+        document.body.appendChild(this.darknessOverlay);
+
+        // Add scroll event listener
+        window.addEventListener('wheel', (event) => {
+            this.handleScrollDarkness(event);
+        }, { passive: false });
+
+        console.log('Scroll darkness control initialized');
+    }
+
+    handleScrollDarkness(event) {
+        // Prevent default scroll behavior
+        event.preventDefault();
+
+        // Determine scroll direction
+        const delta = event.deltaY;
+        
+        if (delta > 0) {
+            // Scroll down = darker
+            this.darknessLevel = Math.min(this.darknessLevel + this.darknessStep, this.maxDarkness);
+        } else {
+            // Scroll up = lighter
+            this.darknessLevel = Math.max(this.darknessLevel - this.darknessStep, 0);
+        }
+
+        // Update darkness overlay opacity
+        this.updateDarknessOverlay();
+
+        // Show darkness level indicator
+        this.showDarknessIndicator();
+    }
+
+    updateDarknessOverlay() {
+        if (this.darknessOverlay) {
+            this.darknessOverlay.style.opacity = this.darknessLevel;
+            
+            // Add thin outline cursor when dark
+            if (this.darknessLevel > 0.5) {
+                document.body.style.cursor = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"8\" stroke=\"white\" stroke-width=\"1\" fill=\"none\"/></svg>') 10 10, auto";
+            } else {
+                document.body.style.cursor = '';
+            }
+        }
+    }
+
+    showDarknessIndicator() {
+        // No visual indicator - darkness control is silent
+    }
+
+    resetDarkness() {
+        this.darknessLevel = 0;
+        this.updateDarknessOverlay();
+        document.body.style.cursor = '';
+    }
+
+    setDarkness(level) {
+        this.darknessLevel = Math.max(0, Math.min(level, this.maxDarkness));
+        this.updateDarknessOverlay();
+    }
+
     applyPreset(presetName) {
         this.animations.applyPreset(presetName);
         console.log(`Applied preset: ${presetName}`);
@@ -1047,6 +1132,26 @@ class AudioVisualizerApp {
             case 'ArrowDown':
                 event.preventDefault();
                 this.adjustSensitivity(-0.1);
+                break;
+            case 'Minus':
+            case 'NumpadSubtract':
+                event.preventDefault();
+                this.darknessLevel = Math.min(this.darknessLevel + this.darknessStep * 2, this.maxDarkness);
+                this.updateDarknessOverlay();
+                this.showDarknessIndicator();
+                break;
+            case 'Equal':
+            case 'NumpadAdd':
+                event.preventDefault();
+                this.darknessLevel = Math.max(this.darknessLevel - this.darknessStep * 2, 0);
+                this.updateDarknessOverlay();
+                this.showDarknessIndicator();
+                break;
+            case 'Digit0':
+            case 'Numpad0':
+                event.preventDefault();
+                this.resetDarkness();
+                this.showDarknessIndicator();
                 break;
         }
     }
@@ -1251,6 +1356,23 @@ class AudioVisualizerApp {
             this.threeScene.destroy();
         }
         
+        // Clean up darkness overlay
+        if (this.darknessOverlay && this.darknessOverlay.parentNode) {
+            this.darknessOverlay.parentNode.removeChild(this.darknessOverlay);
+        }
+
+        // Reset cursor
+        document.body.style.cursor = '';
+
+        // Remove existing darkness indicator
+        const indicator = document.getElementById('darkness-indicator');
+        if (indicator && indicator.parentNode) {
+            indicator.parentNode.removeChild(indicator);
+        }
+
+        // Remove scroll event listener
+        window.removeEventListener('wheel', this.handleScrollDarkness);
+
         // Remove event listeners
         document.removeEventListener('keydown', this.handleKeyPress);
         
